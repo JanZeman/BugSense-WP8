@@ -114,3 +114,4 @@ BugSenseHandler.AddToExtraData("xtra2key", "xtra2val");
 BugSenseHandler.LeaveBreadcrumb("Fetch friends");
 ```
 
+[On-line documentation browser](http://bit.ly/bugsense-wp8-docs)
