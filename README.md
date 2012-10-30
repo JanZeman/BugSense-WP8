@@ -34,7 +34,7 @@ public App()
      BugSenseHandler.Instance.Init(this, "YOUR_API_KEY");
 }
 ```
-![App.xaml.cs](http://localhost:8080/static/images/landing/screens/linecode.jpg)
+![App.xaml.cs](http://www.bugsense.com/static/images/landing/screens/linecode.jpg)
 
 You can also remove any Unhandled Exception handlers like this one:
 	
