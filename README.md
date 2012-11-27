@@ -8,6 +8,10 @@ Install the BugSense [NuGet package](http://nuget.org/packages/BugSense.WP8) usi
 
 	PM> Install-Package BugSense.WP8
 
+For Windows 8 run the following:
+
+        PM> Install-Package BugSense.W8
+
 You can also use the [Package Management Dialog](http://docs.nuget.org/docs/start-here/managing-nuget-packages-using-the-dialog) in Visual Studio to install the BugSense.WP8 package. 
 
 ![Package Manager](http://www.bugsense.com/static/images/landing/screens/install.jpg)
@@ -124,18 +128,6 @@ t.Start();
 BugSenseHandler.CheckTaskFault("mathtask", t);
 ```
 
-You can even override the user notification options
-```c#
-try {
-    throw new InvalidOperationException("An exception occured while executing in a different thread.");
-}
-catch (Exception ex) {
-    var overridenOptions = BugSenseHandler.DefaultOptions();
-    overridenOptions.Text = ex.Message + Environment.NewLine + "Do you want to send the Exception?";
-    overridenOptions.Type = enNotificationType.MessageBoxConfirm;
-    BugSenseHandler.HandleError(ex, string.Format("User {0}", _user), overridenOptions);
-}
-```
 
 Add Breadcrumbs and meta data to crash reports
 ```c#
