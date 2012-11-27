@@ -72,6 +72,41 @@ catch (Exception exc)
     BugSenseHandler.AddToLogData("level", "9");
     BugSenseHandler.Instance.LogError(exc);
 }
+
+// Without extra data
+try
+{
+    throw new Exception("error");
+}
+catch (Exception exc)
+{
+    BugSenseHandler.Instance.LogException(exc);
+}
+
+// With extra data: single key-value pair
+try
+{
+    throw new Exception("error");
+}
+catch (Exception exc)
+{
+    BugSenseHandler.Instance.LogException(exc, "level", "5");
+}
+
+// With extra data: dictionary
+try
+{
+    throw new Exception("error");
+}
+catch (Exception exc)
+{
+    BugSenseHandler.Instance.LogException(exc,
+       new Dictionary<string, string>()
+           {
+                { "account", "Explorer" },
+                { "level", "9"}
+           });
+}
 ```
 
 Monitor if async Tasks have been completed successfully

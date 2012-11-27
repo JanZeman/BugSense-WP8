@@ -16,6 +16,12 @@ local.properties
 .settings/
 .loadpath
 
+# Custom files
+Tasks.txt
+nuget-instructions.txt
+*.nuspec
+*.nupkg
+
 # External tool builders
 .externalToolBuilders/
 
