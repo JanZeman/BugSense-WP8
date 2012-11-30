@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 #if WINDOWS_PHONE
@@ -83,7 +83,7 @@ namespace BugSense.Extensions
                     string_response = System.Text.UTF8Encoding.UTF8.GetString(bytes_resp, 0, (int)response.ContentLength);
 
                     //NOTE: for testing purposes
-                    
+                    /*
                     string_response = "{\"data\": {" +
                         //"\"url\": \"http://www.bugsense.com\", " +
                         "\"url\": \"ms-windows-store:PDP?PFN=microsoft.microsoftskydrive_8wekyb3d8bbwe\", " +
@@ -91,7 +91,7 @@ namespace BugSense.Extensions
                         "\"contentTitle\": \"Please update!\"" +
                         "}, " +
                         "\"error\": null}";
-                    
+                    */
                 }
                 catch (Exception)
                 {
