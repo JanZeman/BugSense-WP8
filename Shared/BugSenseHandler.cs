@@ -1,5 +1,5 @@
-﻿//NOTE: for testing purposes
-#define FREE_BIRD
+//NOTE: for testing purposes
+//#define FREE_BIRD
 
 using BugSense.Extensions;
 using BugSense.Internal;
