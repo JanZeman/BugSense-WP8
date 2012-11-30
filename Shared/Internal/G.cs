@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 
 namespace BugSense.Internal
 {
@@ -13,12 +13,9 @@ namespace BugSense.Internal
         internal const string BUGSENSE_API_VER = "3.2";
 
         //NOTE:
-        internal const string DEFAULT_URL = "http://requestb.in/143yvfk1";
-        internal const string DEFAULT_EVT_URL_PRE = "http://requestb.in/143yvfk1";
-        internal const bool DEFAULT_IS_EVT_URL_PRE = false;
-        /*internal const string DEFAULT_URL = "https://www.bugsense.com/api/errors";
+        internal const string DEFAULT_URL = "https://www.bugsense.com/api/errors";
         internal const string DEFAULT_EVT_URL_PRE = "http://ticks2.bugsense.com/api/ticks/";
-        internal const bool DEFAULT_IS_EVT_URL_PRE = true;*/
+        internal const bool DEFAULT_IS_EVT_URL_PRE = true;
 
         internal static string URL = DEFAULT_URL;
         internal static string EVT_URL_PRE = DEFAULT_EVT_URL_PRE;
