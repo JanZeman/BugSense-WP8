@@ -1,4 +1,4 @@
-﻿using BugSense.Internal;
+using BugSense.Internal;
 using System;
 #if WINDOWS_PHONE
 using System.IO;
@@ -52,7 +52,6 @@ namespace BugSense.Extensions
                 innerEx = innerEx.InnerException;
             }
 
-            //HACK: i was desperate!
             if (!found && !string.IsNullOrEmpty(excMsg))
                 return excMsg;
 
