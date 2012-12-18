@@ -64,6 +64,11 @@ When an error occurs the user is informed by a slick Popup. This option is custo
 
 ### Advanced Settings 
 
+Track an event
+```c#
+BugSenseHandler.Instance.SendEvent("anEvent");
+```
+
 You can also use BugSense to log handled exceptions and send useful Metadata
 ```c#
 try
@@ -140,5 +145,32 @@ BugSenseHandler.AddToExtraData("xtra2key", "xtra2val");
 
 BugSenseHandler.LeaveBreadcrumb("Fetch friends");
 ```
+
+Set a method to be executed before the app crashes (ex. save state)
+```c#
+public App()
+{
+  // Global handler for uncaught exceptions.
+  BugSenseHandler.Instance.Init(this, "YOUR_API_KEY");
+  BugSenseHandler.SetLastBreath(MyMethod);
+ 
+  // ...do more stuff...
+}
+ 
+private void MyMethod()
+{
+  //do stuff here, ex. save state etc ...
+}
+```
+
+Use BugSense along with the VisualStudio debugger
+```c#
+public App()
+{
+  // Global handler for uncaught exceptions.
+  BugSenseHandler.Instance.Init(this, "YOUR_API_KEY", new NotificationOptions() { HandleWhileDebugging = true });
+}
+```
+
 
 [On-line documentation browser](http://bit.ly/bugsense-wp8-docs)
