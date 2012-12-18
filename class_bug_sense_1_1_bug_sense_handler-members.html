@@ -29,7 +29,7 @@
   <td id="projectlogo"><img alt="Logo" src="bugsense-min-in.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">BugSense-Windows8
-   &#160;<span id="projectnumber">3.2</span>
+   &#160;<span id="projectnumber">3.3</span>
    </div>
    <div id="projectbrief">BugSense plugin SDK for Windows 8 (C#) and Windows Phone 8 (C#)</div>
   </td>
@@ -69,6 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -92,7 +93,7 @@ $(document).ready(function(){initNavTree('class_bug_sense_1_1_bug_sense_handler.
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Properties</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -109,13 +110,15 @@ $(document).ready(function(){initNavTree('class_bug_sense_1_1_bug_sense_handler.
 
 <p>This is the complete list of members for <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a28baa6aa16bbe8e68dfbc91bd844fff9">AddToExtraData</a>(string key, string value)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a0251fdfd4ab9e513712fe59336275a61">CheckTaskFault</a>(string idstr, Task t, Dictionary&lt; string, string &gt; logExtra=null, int secs=-1)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a0dda1828ba7ea38c1c1f21e38e6173f5">ActivateProxy</a>()</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a28baa6aa16bbe8e68dfbc91bd844fff9">AddToExtraData</a>(string key, string value)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a0251fdfd4ab9e513712fe59336275a61">CheckTaskFault</a>(string idstr, Task t, Dictionary&lt; string, string &gt; logExtra=null, int secs=-1)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#ab7d2bccff684f3bc2c5c880c36cbbe7f">DeactivateProxy</a>()</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#afd7be15ad5afb023a0024b31be0f35ba">DefaultOptions</a>()</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a0f52af69a6ac520815769098b8a25d64">GetBreadcrumbs</a>()</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#aa10a1a45cd5b634fc9e0f54a5d28cc4e">GetDefaultOptions</a>()</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#ad34367cd49e0e9d4dee5ac23472f1de6">GetExtraData</a>()</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a4394694bfcb0be811b878cfc690656f3">Init</a>(Application application, string apiKey, NotificationOptions options=null)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#ab36b4ce0f2870265e363b222b465ee31">Init</a>(string apiKey, NotificationOptions options=null)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>Instance</b> (defined in <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a>)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a1e99a5813bef17130d19e02cd1fb48e1">LeaveBreadcrumb</a>(string evt)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a035b0e313f8cfb10dc25180b31be5ca1">LogException</a>(Exception ex, string tag=null)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"></td></tr>
@@ -123,15 +126,16 @@ $(document).ready(function(){initNavTree('class_bug_sense_1_1_bug_sense_handler.
   <tr><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a4b081ab91eb663f3d47b4df50bf36d87">LogException</a>(Exception ex, Dictionary&lt; string, string &gt; logExtra, string tag=null)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a2ae8e4f6be88f3dc7ddaa3a5e5699eee">RemoveFromExtraData</a>(string key)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#ac7295cef1bc8620fd324cc10d4a29549">ResetBreadcrumbs</a>()</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a33da11b7cb67c196b7a6f30bca059208">SetExtraData</a>(Dictionary&lt; string, string &gt; dict=null)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a8a88298fa8c87c8cb807e834f4360df6">SetLastBreath</a>(Action act)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr bgcolor="#f0f0f0"class="even"><td class="entry"><b>UnhandledException</b> (defined in <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a>)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a7893e98ee91c3d599470e1bb3d65342a">SendEvent</a>(string tag)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a33da11b7cb67c196b7a6f30bca059208">SetExtraData</a>(Dictionary&lt; string, string &gt; dict=null)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a8a88298fa8c87c8cb807e834f4360df6">SetLastBreath</a>(Action act)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>UnhandledException</b> (defined in <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a>)</td><td class="entry"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSense.BugSenseHandler</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Nov 23 2012 16:55:55 for BugSense-Windows8 by
+    <li class="footer">Generated on Tue Dec 18 2012 18:00:15 for BugSense-Windows8 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

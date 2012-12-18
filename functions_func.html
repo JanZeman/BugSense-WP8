@@ -29,7 +29,7 @@
   <td id="projectlogo"><img alt="Logo" src="bugsense-min-in.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">BugSense-Windows8
-   &#160;<span id="projectnumber">3.2</span>
+   &#160;<span id="projectnumber">3.3</span>
    </div>
    <div id="projectbrief">BugSense plugin SDK for Windows 8 (C#) and Windows Phone 8 (C#)</div>
   </td>
@@ -69,6 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li class="current"><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -76,6 +77,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="functions.html"><span>All</span></a></li>
       <li class="current"><a href="functions_func.html"><span>Functions</span></a></li>
+      <li><a href="functions_prop.html"><span>Properties</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -98,7 +100,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Properties</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -109,11 +111,17 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 <div class="contents">
 &#160;<ul>
+<li>ActivateProxy()
+: <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a0dda1828ba7ea38c1c1f21e38e6173f5">BugSense.BugSenseHandler</a>
+</li>
 <li>AddToExtraData()
 : <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a28baa6aa16bbe8e68dfbc91bd844fff9">BugSense.BugSenseHandler</a>
 </li>
 <li>CheckTaskFault()
 : <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a0251fdfd4ab9e513712fe59336275a61">BugSense.BugSenseHandler</a>
+</li>
+<li>DeactivateProxy()
+: <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#ab7d2bccff684f3bc2c5c880c36cbbe7f">BugSense.BugSenseHandler</a>
 </li>
 <li>DefaultOptions()
 : <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#afd7be15ad5afb023a0024b31be0f35ba">BugSense.BugSenseHandler</a>
@@ -128,7 +136,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#ad34367cd49e0e9d4dee5ac23472f1de6">BugSense.BugSenseHandler</a>
 </li>
 <li>Init()
-: <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a4394694bfcb0be811b878cfc690656f3">BugSense.BugSenseHandler</a>
+: <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#ab36b4ce0f2870265e363b222b465ee31">BugSense.BugSenseHandler</a>
 </li>
 <li>LeaveBreadcrumb()
 : <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a1e99a5813bef17130d19e02cd1fb48e1">BugSense.BugSenseHandler</a>
@@ -142,6 +150,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>ResetBreadcrumbs()
 : <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#ac7295cef1bc8620fd324cc10d4a29549">BugSense.BugSenseHandler</a>
 </li>
+<li>SendEvent()
+: <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a7893e98ee91c3d599470e1bb3d65342a">BugSense.BugSenseHandler</a>
+</li>
 <li>SetExtraData()
 : <a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a33da11b7cb67c196b7a6f30bca059208">BugSense.BugSenseHandler</a>
 </li>
@@ -154,7 +165,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Nov 23 2012 16:55:55 for BugSense-Windows8 by
+    <li class="footer">Generated on Tue Dec 18 2012 18:00:15 for BugSense-Windows8 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

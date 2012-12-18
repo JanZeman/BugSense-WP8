@@ -29,7 +29,7 @@
   <td id="projectlogo"><img alt="Logo" src="bugsense-min-in.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">BugSense-Windows8
-   &#160;<span id="projectnumber">3.2</span>
+   &#160;<span id="projectnumber">3.3</span>
    </div>
    <div id="projectbrief">BugSense plugin SDK for Windows 8 (C#) and Windows Phone 8 (C#)</div>
   </td>
@@ -69,6 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -92,7 +93,7 @@ $(document).ready(function(){initNavTree('class_bug_sense_1_1_bug_sense_handler.
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Properties</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -116,9 +117,9 @@ $(document).ready(function(){initNavTree('class_bug_sense_1_1_bug_sense_handler.
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4394694bfcb0be811b878cfc690656f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a4394694bfcb0be811b878cfc690656f3">Init</a> (Application application, string apiKey, NotificationOptions options=null)</td></tr>
-<tr class="memdesc:a4394694bfcb0be811b878cfc690656f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialized the <a class="el" href="namespace_bug_sense.html">BugSense</a> handler. Must be called at App constructor.  <a href="#a4394694bfcb0be811b878cfc690656f3"></a><br/></td></tr>
-<tr class="separator:a4394694bfcb0be811b878cfc690656f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab36b4ce0f2870265e363b222b465ee31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#ab36b4ce0f2870265e363b222b465ee31">Init</a> (string apiKey, <a class="el" href="class_bug_sense_1_1_notification_options.html">NotificationOptions</a> options=null)</td></tr>
+<tr class="memdesc:ab36b4ce0f2870265e363b222b465ee31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialized the <a class="el" href="namespace_bug_sense.html">BugSense</a> handler. Must be called at App constructor.  <a href="#ab36b4ce0f2870265e363b222b465ee31"></a><br/></td></tr>
+<tr class="separator:ab36b4ce0f2870265e363b222b465ee31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a035b0e313f8cfb10dc25180b31be5ca1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a035b0e313f8cfb10dc25180b31be5ca1">LogException</a> (Exception ex, string tag=null)</td></tr>
 <tr class="memdesc:a035b0e313f8cfb10dc25180b31be5ca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this method inside a catch block or when you want to send error details to <a class="el" href="namespace_bug_sense.html">BugSense</a>  <a href="#a035b0e313f8cfb10dc25180b31be5ca1"></a><br/></td></tr>
 <tr class="separator:a035b0e313f8cfb10dc25180b31be5ca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,7 +129,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4b081ab91eb663f3d47b4df50bf36d87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a4b081ab91eb663f3d47b4df50bf36d87">LogException</a> (Exception ex, Dictionary&lt; string, string &gt; logExtra, string tag=null)</td></tr>
 <tr class="memdesc:a4b081ab91eb663f3d47b4df50bf36d87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this method inside a catch block or when you want to send error details to <a class="el" href="namespace_bug_sense.html">BugSense</a>  <a href="#a4b081ab91eb663f3d47b4df50bf36d87"></a><br/></td></tr>
 <tr class="separator:a4b081ab91eb663f3d47b4df50bf36d87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa10a1a45cd5b634fc9e0f54a5d28cc4e"><td class="memItemLeft" align="right" valign="top">NotificationOptions&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#aa10a1a45cd5b634fc9e0f54a5d28cc4e">GetDefaultOptions</a> ()</td></tr>
+<tr class="memitem:a7893e98ee91c3d599470e1bb3d65342a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a7893e98ee91c3d599470e1bb3d65342a">SendEvent</a> (string tag)</td></tr>
+<tr class="memdesc:a7893e98ee91c3d599470e1bb3d65342a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this method to send an event to <a class="el" href="namespace_bug_sense.html">BugSense</a>  <a href="#a7893e98ee91c3d599470e1bb3d65342a"></a><br/></td></tr>
+<tr class="separator:a7893e98ee91c3d599470e1bb3d65342a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa10a1a45cd5b634fc9e0f54a5d28cc4e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_bug_sense_1_1_notification_options.html">NotificationOptions</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#aa10a1a45cd5b634fc9e0f54a5d28cc4e">GetDefaultOptions</a> ()</td></tr>
 <tr class="memdesc:aa10a1a45cd5b634fc9e0f54a5d28cc4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets default options for error handling  <a href="#aa10a1a45cd5b634fc9e0f54a5d28cc4e"></a><br/></td></tr>
 <tr class="separator:aa10a1a45cd5b634fc9e0f54a5d28cc4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -158,12 +162,18 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a0f52af69a6ac520815769098b8a25d64"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a0f52af69a6ac520815769098b8a25d64">GetBreadcrumbs</a> ()</td></tr>
 <tr class="memdesc:a0f52af69a6ac520815769098b8a25d64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the bradcrumbs left as a string  <a href="#a0f52af69a6ac520815769098b8a25d64"></a><br/></td></tr>
 <tr class="separator:a0f52af69a6ac520815769098b8a25d64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd7be15ad5afb023a0024b31be0f35ba"><td class="memItemLeft" align="right" valign="top">static NotificationOptions&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#afd7be15ad5afb023a0024b31be0f35ba">DefaultOptions</a> ()</td></tr>
+<tr class="memitem:afd7be15ad5afb023a0024b31be0f35ba"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_bug_sense_1_1_notification_options.html">NotificationOptions</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#afd7be15ad5afb023a0024b31be0f35ba">DefaultOptions</a> ()</td></tr>
 <tr class="memdesc:afd7be15ad5afb023a0024b31be0f35ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets default options for error handling  <a href="#afd7be15ad5afb023a0024b31be0f35ba"></a><br/></td></tr>
 <tr class="separator:afd7be15ad5afb023a0024b31be0f35ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a88298fa8c87c8cb807e834f4360df6"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a8a88298fa8c87c8cb807e834f4360df6">SetLastBreath</a> (Action act)</td></tr>
 <tr class="memdesc:a8a88298fa8c87c8cb807e834f4360df6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an action to perform when the application crashes (just before exiting to the OS). Caution! You shouldn't perform any async or UI routine calls in this action; the application will immediately exit after this call returns.  <a href="#a8a88298fa8c87c8cb807e834f4360df6"></a><br/></td></tr>
 <tr class="separator:a8a88298fa8c87c8cb807e834f4360df6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dda1828ba7ea38c1c1f21e38e6173f5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#a0dda1828ba7ea38c1c1f21e38e6173f5">ActivateProxy</a> ()</td></tr>
+<tr class="memdesc:a0dda1828ba7ea38c1c1f21e38e6173f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends subsequent requests through the <a class="el" href="namespace_bug_sense.html">BugSense</a> proxy  <a href="#a0dda1828ba7ea38c1c1f21e38e6173f5"></a><br/></td></tr>
+<tr class="separator:a0dda1828ba7ea38c1c1f21e38e6173f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7d2bccff684f3bc2c5c880c36cbbe7f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html#ab7d2bccff684f3bc2c5c880c36cbbe7f">DeactivateProxy</a> ()</td></tr>
+<tr class="memdesc:ab7d2bccff684f3bc2c5c880c36cbbe7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancels sending subsequent requests through the <a class="el" href="namespace_bug_sense.html">BugSense</a> proxy  <a href="#ab7d2bccff684f3bc2c5c880c36cbbe7f"></a><br/></td></tr>
+<tr class="separator:ab7d2bccff684f3bc2c5c880c36cbbe7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -179,6 +189,32 @@ EventHandler<br class="typebreak"/>
 <tr class="separator:a504041f4fe7296df4f6ada2d8fbc550e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a0dda1828ba7ea38c1c1f21e38e6173f5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void BugSense.BugSenseHandler.ActivateProxy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sends subsequent requests through the <a class="el" href="namespace_bug_sense.html">BugSense</a> proxy </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a28baa6aa16bbe8e68dfbc91bd844fff9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -281,6 +317,32 @@ EventHandler<br class="typebreak"/>
 
 </div>
 </div>
+<a class="anchor" id="ab7d2bccff684f3bc2c5c880c36cbbe7f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void BugSense.BugSenseHandler.DeactivateProxy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Cancels sending subsequent requests through the <a class="el" href="namespace_bug_sense.html">BugSense</a> proxy </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="afd7be15ad5afb023a0024b31be0f35ba"></a>
 <div class="memitem">
 <div class="memproto">
@@ -289,7 +351,7 @@ EventHandler<br class="typebreak"/>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static NotificationOptions BugSense.BugSenseHandler.DefaultOptions </td>
+          <td class="memname">static <a class="el" href="class_bug_sense_1_1_notification_options.html">NotificationOptions</a> BugSense.BugSenseHandler.DefaultOptions </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -338,7 +400,7 @@ EventHandler<br class="typebreak"/>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">NotificationOptions BugSense.BugSenseHandler.GetDefaultOptions </td>
+          <td class="memname"><a class="el" href="class_bug_sense_1_1_notification_options.html">NotificationOptions</a> BugSense.BugSenseHandler.GetDefaultOptions </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -377,26 +439,20 @@ EventHandler<br class="typebreak"/>
 
 </div>
 </div>
-<a class="anchor" id="a4394694bfcb0be811b878cfc690656f3"></a>
+<a class="anchor" id="ab36b4ce0f2870265e363b222b465ee31"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void BugSense.BugSenseHandler.Init </td>
           <td>(</td>
-          <td class="paramtype">Application&#160;</td>
-          <td class="paramname"><em>application</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>apiKey</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">NotificationOptions&#160;</td>
+          <td class="paramtype"><a class="el" href="class_bug_sense_1_1_notification_options.html">NotificationOptions</a>&#160;</td>
           <td class="paramname"><em>options</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
@@ -410,8 +466,7 @@ EventHandler<br class="typebreak"/>
 <p>Initialized the <a class="el" href="namespace_bug_sense.html">BugSense</a> handler. Must be called at App constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">application</td><td>The Windows Phone application.</td></tr>
-    <tr><td class="paramname">apiKey</td><td>The Api Key that can be retrieved at bugsense.com</td></tr>
+    <tr><td class="paramname">apiKey</td><td>The Api Key that can be retrieved from bugsense.com</td></tr>
     <tr><td class="paramname">options</td><td>Optional Options</td></tr>
   </table>
   </dd>
@@ -637,6 +692,30 @@ EventHandler<br class="typebreak"/>
 
 </div>
 </div>
+<a class="anchor" id="a7893e98ee91c3d599470e1bb3d65342a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BugSense.BugSenseHandler.SendEvent </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>tag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Use this method to send an event to <a class="el" href="namespace_bug_sense.html">BugSense</a> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tag</td><td>The event.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a33da11b7cb67c196b7a6f30bca059208"></a>
 <div class="memitem">
 <div class="memproto">
@@ -712,7 +791,7 @@ EventHandler<br class="typebreak"/>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_bug_sense.html">BugSense</a></li><li class="navelem"><a class="el" href="class_bug_sense_1_1_bug_sense_handler.html">BugSenseHandler</a></li>
-    <li class="footer">Generated on Fri Nov 23 2012 16:55:55 for BugSense-Windows8 by
+    <li class="footer">Generated on Tue Dec 18 2012 18:00:15 for BugSense-Windows8 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>
