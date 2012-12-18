@@ -11,26 +11,9 @@ using Windows.Storage.Streams;
 
 namespace BugSense.Extensions
 {
-    internal class FilesReadResult
+	internal class Files
     {
-        public string Str;
-        public bool Result;
-
-        public FilesReadResult(string str, bool result)
-        {
-            this.Str = str;
-            this.Result = result;
-        }
-
-        public FilesReadResult()
-        {
-            this.Str = "";
-            this.Result = false;
-        }
-    }
-
-    internal class Files
-    {
+		#region [ Exists ]
         public async static Task<bool> Exists(string fpathname)
         {
 #if WINDOWS_PHONE
@@ -62,9 +45,13 @@ namespace BugSense.Extensions
             }
 
             return false;
+#else
+			return await Task.Run (() => { return File.Exists(fpathname); });
 #endif
         }
+		#endregion
 
+		#region [ GetDirFilenames ]
         public async static Task<List<string>> GetDirFilenames(string path, string prefix)
         {
 #if WINDOWS_PHONE
@@ -134,10 +121,44 @@ namespace BugSense.Extensions
             }
 
             return new List<string>();
+#else
+			return await Task.Run (() => {
+				List<string> result = new List<string>();
+				
+				try
+				{
+					string[] filePaths = Directory.GetFiles(path);
+					// no exception means file exists
+					if (filePaths != null)
+					{
+						var list2 = new List<string>(filePaths);
+						list2.Sort(delegate(string a, string b) {
+							int xdiff = a.CompareTo(b);
+							return -xdiff;
+						});
+						foreach (var fname in list2)
+						{
+							string tmp = Path.GetFileName(fname);
+							if (tmp.StartsWith(prefix))
+								result.Add(tmp);
+						}
+					}
+					
+					return result;
+				}
+				catch (Exception)
+				{
+					// find out through exception 
+				}
+				
+				return new List<string>();
+			});
 #endif
         }
+		#endregion
 
-        public async static Task<bool> WriteTo(string path, string fname, string str)
+		#region [ CreatWriteTo ]
+        public async static Task<bool> CreatWriteTo(string path, string fname, string str)
         {
             var fpathname = Path.Combine(path, fname);
 
@@ -177,7 +198,8 @@ namespace BugSense.Extensions
 
             try
             {
-                var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(path, CreationCollisionOption.OpenIfExists);
+                var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(
+					path, CreationCollisionOption.OpenIfExists);
                 file = await folder.CreateFileAsync(fname, CreationCollisionOption.ReplaceExisting);
             }
             catch (Exception)
@@ -200,10 +222,26 @@ namespace BugSense.Extensions
             }
 
             return result;
+#else
+			return await Task.Run (() => {
+				try
+				{
+					if(!Directory.Exists(path))
+						Directory.CreateDirectory(path);
+					File.WriteAllText(fpathname, str);
+					return true;
+				}
+				catch (Exception)
+				{
+					return false;
+				}
+			});
 #endif
         }
+		#endregion
 
-        public async static Task<FilesReadResult> ReadFrom(string fpathname)
+		#region [ ReadFrom ]
+        public async static Task<Tuple<string, bool>> ReadFrom(string fpathname)
         {
 #if WINDOWS_PHONE
             return await Task.Run(() =>
@@ -211,20 +249,20 @@ namespace BugSense.Extensions
                     using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
                     {
                         if (!storage.FileExists(fpathname))
-                            return new FilesReadResult("", false);
+                            return new Tuple<string, bool>("", false);
                         using (var fileStream = storage.OpenFile(fpathname, FileMode.Open))
                         {
                             using (StreamReader sr = new StreamReader(fileStream))
                             {
                                 string data = sr.ReadToEnd();
 
-                                return new FilesReadResult(data, true);
+                                return new Tuple<string, bool>(data, true);
                             }
                         }
                     }
                 });
 #elif NETFX_CORE
-            FilesReadResult result = new FilesReadResult("", false);
+            Tuple<string, bool> result = new Tuple<string, bool>("", false);
             StorageFile file = null;
 
             try
@@ -248,15 +286,34 @@ namespace BugSense.Extensions
                         string data = reader.ReadString((uint)fs.Size);
                         reader.DetachStream();
 
-                        result = new FilesReadResult(data, true);
+                        result = new Tuple<string, bool>(data, true);
                     }
                 }
             }
 
             return result;
+#else
+			return await Task.Run (() => {
+				try
+				{
+					string str = File.ReadAllText(fpathname);
+					return new Tuple<string, bool>(str, true);
+				}
+				catch (Exception)
+				{
+					return new Tuple<string, bool>("", false);
+				}
+			});
 #endif
         }
 
+		public async static Task<Tuple<string, bool>> ReadFrom(string path, string fname)
+		{
+			return await ReadFrom(Path.Combine(path, fname));
+		}
+		#endregion
+
+		#region [ Delete ]
         public async static Task Delete(string fpathname)
         {
 #if WINDOWS_PHONE
@@ -285,12 +342,23 @@ namespace BugSense.Extensions
             catch (Exception)
             {
             }
+#else
+			await Task.Run (() => {
+				try
+				{
+					File.Delete(fpathname);
+				}
+				catch (Exception)
+				{
+				}
+			});
 #endif
         }
 
         public async static Task Delete(string path, string fname)
         {
-            await Delete(Path.Combine(new string[] { path, fname }));
+            await Delete(Path.Combine(path, fname));
         }
+		#endregion
     }
 }

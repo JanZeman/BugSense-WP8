@@ -1,4 +1,4 @@
-﻿using BugSense.Extensions;
+using BugSense.Extensions;
 using BugSense.Internal;
 #if WINDOWS_PHONE
 using BugSense.InternalWP8;
@@ -19,10 +19,13 @@ using Windows.UI.Xaml;
 
 namespace BugSense.Tasks
 {
+	#region [ Signal handlers ]
     internal delegate void FixNotificationEventHandler(object sender, FixNotificationEventArgs e);
+	#endregion
 
     internal sealed class Worker
     {
+		#region [ Attributes ]
         public event FixNotificationEventHandler FixNotification;
 
         private readonly Semaphore _lockToSend = new Semaphore(1, 1);
@@ -30,22 +33,28 @@ namespace BugSense.Tasks
         private string _prevEvtTs = "";
         private static readonly DataContractJsonSerializer _jsonDeserializer =
             new DataContractJsonSerializer(typeof(FixResponse));
+		#endregion
 
+		#region [ Ctor ]
         public Worker()
         {
         }
-        public Worker(bool with)
+
+		public Worker(bool with)
         {
             if (with)
                 ProcessAll();
         }
+		#endregion
 
+		#region [ Public methods ]
         public void ProcessAll()
         {
-            string uuid = ManageUUID();
-            ProcessMsgs msgs = new ProcessMsgs(uuid);
             Task t = new Task(async () =>
                 {
+                    string uuid = await UUIDFactory.Get();
+                    ProcessRequests msgs = new ProcessRequests(uuid);
+
                     try
                     {
                         _lockToSend.WaitOne();
@@ -62,11 +71,11 @@ namespace BugSense.Tasks
             t.Start();
         }
 
-        public void CacheError(BugSenseRequest req, bool isFatal)
+        public void CacheError(BugSenseExceptionRequest req, bool isFatal)
         {
-            LogError err = new LogError(req, isFatal);
             Task t = new Task(async () =>
                 {
+                    LogError err = new LogError(req, isFatal);
                     Helpers.Log("begin(CacheError)");
                     string res = await err.Execute();
                     Helpers.Log("end(CacheError): " + res);
@@ -74,7 +83,8 @@ namespace BugSense.Tasks
             t.Start();
         }
 
-        public void SendErrorNow(BugSenseRequest req, bool isFatal)
+        public void SendErrorNow(BugSenseExceptionRequest req, bool isFatal,
+			bool debugFixResponse = false)
         {
             Task t = new Task(async () =>
                 {
@@ -87,11 +97,13 @@ namespace BugSense.Tasks
                         {
                             try
                             {
-                                SendMsg msg = null;
+                                SendRequest msg = null;
                                 if (isFatal)
-                                    msg = new SendMsg(str, FixNotificationAndDieAction);
+                                    msg = new SendRequest(str, FixNotificationAndDieAction);
                                 else
-                                    msg = new SendMsg(str, FixNotificationAction);
+                                    msg = new SendRequest(str, FixNotificationAction);
+								if (debugFixResponse)
+									msg.setDebugFixedResponse(true);
                                 _lockToSend.WaitOne();
                                 Helpers.Log("begin(SendErrorNow-2)");
                                 bool res = await msg.Execute();
@@ -110,19 +122,19 @@ namespace BugSense.Tasks
                         Helpers.Log("fail(SendErrorNow)");
                     }
                 });
-            t.Start();
+			t.Start();
         }
 
-        public void CacheEvent(AppEnvironment env, string tag)
+        public void CacheEvent(AppEnvironment env, string tag, bool reserved = false)
         {
-            var evtrequest = new BugSenseEvent(env, tag);
+            var evtrequest = new BugSenseEventRequest(env, tag, reserved);
             string contents = evtrequest.getFlatLine();
 
-            LogEvent evt = new LogEvent(contents);
             Task t = new Task(async () =>
                 {
                     try
                     {
+                        LogEvent evt = new LogEvent(contents, reserved);
                         _lockToSendEvt.WaitOne();
                         if (!evtrequest.TimeStamp.Equals(_prevEvtTs))
                         {
@@ -146,31 +158,28 @@ namespace BugSense.Tasks
             t.Start();
         }
 
-        public void SendEventNow(AppEnvironment env, string tag)
+        public void SendEventNow(AppEnvironment env, string tag, bool reserved = false)
         {
-            var evtrequest = new BugSenseEvent(env, tag);
+            var evtrequest = new BugSenseEventRequest(env, tag, reserved);
             string contents = evtrequest.getFlatLine();
-
-            string uuid = ManageUUID();
-            string url = G.IsEvtUrlPre ?
-                G.EVT_URL_PRE + G.API_KEY + "/" + uuid :
-                G.EVT_URL_PRE;
 
             Task t = new Task(async () =>
                 {
                     try
                     {
+                        string uuid = env.Uid;
+                        string url = WebRequests.GetEventURL(uuid);
                         _lockToSendEvt.WaitOne();
                         if (!evtrequest.TimeStamp.Equals(_prevEvtTs))
                         {
                             _prevEvtTs = evtrequest.TimeStamp;
                             _lockToSendEvt.Release();
                             Helpers.Log("begin(SendEventNow-1)");
-                            LogEvent evt = new LogEvent(contents);
+                            LogEvent evt = new LogEvent(contents, reserved);
                             string str = await evt.Execute();
                             if (!string.IsNullOrEmpty(str))
                             {
-                                SendMsg msg = new SendMsg(url, str, false);
+                                SendRequest msg = new SendRequest(url, str, false);
                                 _lockToSend.WaitOne();
                                 Helpers.Log("begin(SendEventNow-2)");
                                 bool res = await msg.Execute();
@@ -193,17 +202,19 @@ namespace BugSense.Tasks
             t.Start();
         }
 
-        public string ManageUUID()
-        {
-            string uuid = G.UUID;
+        public string ManageUUID ()
+		{
+			string uuid = G.UUID;
 
-            if (string.IsNullOrEmpty(uuid))
-                Task.Run(async () => uuid = await UUIDFactory.Get()).Wait();
+			if (string.IsNullOrEmpty (uuid))
+				Task.Run(async () => {
+					uuid = await UUIDFactory.Get();
+				}).Wait();
 
             return uuid;
         }
 
-        public void NotificationHelper(string response, bool isFatal, Action act)
+		public void NotificationHelper(string response, bool isFatal, Action act)
         {
             if (response.IndexOf("contentTitle") > 0)
             {
@@ -214,8 +225,11 @@ namespace BugSense.Tasks
                     using (MemoryStream ms = new MemoryStream(byteArray))
                     {
                         FixResponse fixer = (FixResponse)_jsonDeserializer.ReadObject(ms);
-                        if (!NotificationBox.IsOpen())
-                            NotificationBox.Show(fixer.Data.ContentTitle, fixer.Data.ContentText,
+#if (WINDOWS_PHONE || NETFX_CORE)
+                        string title = G.HasLocalizedFixes ? G.LocalizedFixTitle : fixer.Data.ContentTitle;
+                        string text = G.HasLocalizedFixes ? G.LocalizedFixText : fixer.Data.ContentText;
+						if (!NotificationBox.IsOpen())
+                            NotificationBox.Show(title, text,
                             new NotificationBoxCommand(Labels.UpdateMessage, () =>
                             {
                                 // go to update
@@ -231,8 +245,15 @@ namespace BugSense.Tasks
                                 if (isFatal)
                                     Die(act);
                             }));
+#else
+						// go to update
+						Helpers.Log("update(NotificationHelper)");
+						Browsers.Goto(fixer.Data.Url);
+						if (isFatal && act != null)
+							act();
+#endif
                     }
-                }
+				}
                 catch (BugSenseUnhandledException ex)
                 {
                     throw ex;
@@ -254,9 +275,13 @@ namespace BugSense.Tasks
             throw new BugSenseUnhandledException();
 #elif NETFX_CORE
             Application.Current.Exit();
+#else
+			throw new BugSenseUnhandledException();
 #endif
         }
+		#endregion
 
+		#region [ Private methods ]
         private void FixNotificationAction(string response)
         {
             if (FixNotification != null)
@@ -268,5 +293,6 @@ namespace BugSense.Tasks
             if (FixNotification != null)
                 FixNotification(this, new FixNotificationEventArgs(response, true));
         }
+		#endregion
     }
 }

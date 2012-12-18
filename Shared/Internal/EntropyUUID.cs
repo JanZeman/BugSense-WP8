@@ -15,6 +15,9 @@ using System.Text;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage.Streams;
+#else
+using System.Security.Cryptography;
+using System.Text;
 #endif
 
 namespace EntropyUUID
@@ -25,7 +28,7 @@ namespace EntropyUUID
         private static RNGCryptoServiceProvider _global = new RNGCryptoServiceProvider();
 #endif
 
-        public static string getNew()
+        public static string GetNew()
         {
             // STEP 1: get time since Epoch.
             // OUTPUT: timestamp in millisecond (or finer) granularity.
@@ -62,7 +65,7 @@ namespace EntropyUUID
             byte[] buffer = new byte[4];
             _global.GetBytes(buffer);
             string s4 = ((new Random(BitConverter.ToInt32(buffer, 0))).Next() % 65536).ToString();
-#elif NETFX_CORE
+#else
             string s4 = (new Random().Next() % 65536).ToString();
 #endif
 
@@ -114,6 +117,12 @@ namespace EntropyUUID
 
             // Return the encoded string
             return str.ToLowerInvariant();
+#else
+			SHA1Managed s = new SHA1Managed();
+			UTF8Encoding enc = new UTF8Encoding();
+			s.ComputeHash(enc.GetBytes(input.ToCharArray()));
+			
+			return BitConverter.ToString(s.Hash).Replace("-", "").ToLowerInvariant();
 #endif
         }
     }

@@ -6,16 +6,19 @@ using System.IO;
 using System.Text;
 #if WINDOWS_PHONE
 using System.Windows;
+#elif !NETFX_CORE
+using System.Windows.Forms;
 #endif
 
 namespace BugSense.Extensions
 {
     internal static class Helpers
     {
-        public static BugSenseEx ToBugSenseEx(this Exception ex, string excMsg, bool handled,
+		#region [ Exceptions ]
+        public static BugSenseException ToBugSenseEx(this Exception ex, string excMsg, bool handled,
             string tag = null, string breadcrumbs = null)
         {
-            BugSenseEx be = new BugSenseEx();
+            BugSenseException be = new BugSenseException();
             be.Tag = tag;
             be.ClassName = ex.GetType().FullName;
             be.DateOccured = DateTime.Now;
@@ -52,12 +55,15 @@ namespace BugSense.Extensions
                 innerEx = innerEx.InnerException;
             }
 
+            //HACK: i was desperate!
             if (!found && !string.IsNullOrEmpty(excMsg))
                 return excMsg;
 
             return sb.ToString().Trim();
         }
+		#endregion
 
+		#region [ Versions ]
 #if NETFX_CORE
         private static string versionString(Windows.ApplicationModel.PackageVersion version)
         {
@@ -131,25 +137,48 @@ namespace BugSense.Extensions
             }
 
             return new[] { title, version };
+#else
+			string name = "";
+			string version = "";
+			try
+			{
+				name = Application.ProductName;
+				version = Application.ProductVersion;
+			}
+			catch (Exception)
+			{
+				name = G.API_BINARY_NAME;
+			}
+
+			return new[] { name, version };
 #endif
         }
+		#endregion
 
+		#region [ Sleep ]
         public static void SleepFor(int ms)
         {
 #if WINDOWS_PHONE
             System.Threading.Thread.Sleep(ms);
 #elif NETFX_CORE
             new System.Threading.ManualResetEvent(false).WaitOne(ms);
+#else
+			System.Threading.Thread.Sleep(ms);
 #endif
         }
+		#endregion
 
+		#region [ DebugLog ]
         public static void Log(string message)
         {
 #if WINDOWS_PHONE
             System.Diagnostics.Debugger.Log(3, "[BugSense]", message + "\n");
 #elif NETFX_CORE
             System.Diagnostics.Debug.WriteLine("[BugSense] " + message);
+#else
+			Console.WriteLine("[BugSense] " + message);
 #endif
         }
+		#endregion
     }
 }

@@ -1,5 +1,7 @@
 //NOTE: for testing purposes
-//#define FREE_BIRD
+#if DEBUG
+#define FREE_BIRD
+#endif
 
 using BugSense.Extensions;
 using BugSense.Internal;
@@ -7,6 +9,8 @@ using BugSense.Internal;
 using BugSense.InternalWP8;
 #elif NETFX_CORE
 using BugSense.InternalW8;
+#else
+using BugSense.InternalDotNet;
 #endif
 using BugSense.Tasks;
 #if WINDOWS_PHONE
@@ -58,12 +62,19 @@ namespace BugSense
 
         #endregion
 
-        #region [ Fields ]
+        #region [ Attributes ]
 
+#if DEBUG
+		public bool DebugFixResponse { get; set; }
+#endif
         private Worker _worker;
         private NotificationOptions _options;
+#if (WINDOWS_PHONE || NETFX_CORE)
         private Application _application;
-        private bool _initialized;
+#else
+		private AppDomain _application;
+#endif
+		private bool _initialized;
         private string _appVersion;
         private string _appName;
         private static Action _actOnExit = null;
@@ -78,22 +89,40 @@ namespace BugSense
 
         ///////////////////////////////////////////////////////////////////////////////////////////
 
-        /// <summary>
-        /// Initialized the BugSense handler. Must be called at App constructor.
-        /// </summary>
-        /// <param name="application">The Windows Phone application.</param>
-        /// <param name="apiKey">The Api Key that can be retrieved at bugsense.com</param>
-        /// <param name="options">Optional Options</param>
-        public void Init(Application application, string apiKey, NotificationOptions options = null)
-        {
+#if (WINDOWS_PHONE || NETFX_CORE)
+		/// <summary>
+		/// Initialized the BugSense handler. Must be called at App constructor.
+		/// </summary>
+		/// <param name="application">The Windows application.</param>
+		/// <param name="apiKey">The Api Key that can be retrieved from bugsense.com</param>
+		/// <param name="options">Optional Options</param>
+		public void Init(Application application, string apiKey, NotificationOptions options = null)
+#else
+		/// <summary>
+		/// Initialized the BugSense handler. Must be called at App constructor.
+		/// </summary>
+		/// <param name="apiKey">The Api Key that can be retrieved from bugsense.com</param>
+		/// <param name="options">Optional Options</param>
+		public void Init(string apiKey, NotificationOptions options = null)
+#endif
+		{
+#if DEBUG
+			DebugFixResponse = false;
+#endif
+
             if (_initialized)
                 return;
 
             // General Initializations
             G.Timer.Restart();
             _options = options ?? GetDefaultOptions();
-            _application = application;
-            G.API_KEY = apiKey;
+#if (WINDOWS_PHONE || NETFX_CORE)
+			_application = application;
+#else
+			_application = AppDomain.CurrentDomain;
+			G.API_BINARY_NAME = _application.FriendlyName;
+#endif
+			G.API_KEY = apiKey;
 
             SetExtraData();
             ResetBreadcrumbs();
@@ -110,7 +139,12 @@ namespace BugSense
             // Attaching the handler
             if (_application != null)
             {
+#if (WINDOWS_PHONE || NETFX_CORE)
                 _application.UnhandledException += OnUnhandledException;
+#else
+				_application.UnhandledException +=
+					new UnhandledExceptionEventHandler(OnUnhandledException);
+#endif
 #if NETFX_CORE
                 TryToSetDispatcher();
 #endif
@@ -118,7 +152,7 @@ namespace BugSense
 
             _actOnExit = null;
 
-            SendEvent(G.PingEvent);
+            HandleEvent(G.PingEvent, false, true);
 
             // Just in case Init() is called again
             _initialized = true;
@@ -201,11 +235,19 @@ namespace BugSense
 
                 if (t.IsCompleted && t.IsFaulted)
                 {
-                    Instance.Handle(t.Exception.GetBaseException(), "", true, idstr,
-                        new NotificationOptions { Type = enNotificationType.None }, false, logExtra);
+                    Instance.Handle(t.Exception.GetBaseException(), "", true, idstr, null, false, logExtra);
                 }
             });
             tover.Start();
+        }
+
+        /// <summary>
+        /// Use this method to send an event to BugSense
+        /// </summary>
+        /// <param name="tag">The event.</param>
+        public void SendEvent(string tag)
+        {
+            HandleEvent(tag, true, false);
         }
 
         /// <summary>
@@ -218,7 +260,7 @@ namespace BugSense
 
             lock (G.LockThis)
             {
-                res = new Dictionary<string, string>(G.ExcExtraData.Get());
+                res = new Dictionary<string, string>(G.ExcExtraData.Dict);
             }
 
             return res;
@@ -311,7 +353,7 @@ namespace BugSense
 
             lock (G.LockThis)
             {
-                res = G.Breadcrumbs.Reduce();
+                res = G.Breadcrumbs.ToString();
             }
 
             return res;
@@ -335,9 +377,7 @@ namespace BugSense
         {
             return new NotificationOptions
             {
-                Title = "",
-                Text = "",
-                Type = enNotificationType.MessageBoxConfirm
+                Type = enNotificationType.None
             };
         }
 
@@ -354,40 +394,86 @@ namespace BugSense
             _actOnExit = act;
         }
 
+        /// <summary>
+        /// Sends subsequent requests through the BugSense proxy
+        /// </summary>
+        /// <returns></returns>
+        public static void ActivateProxy()
+        {
+            G.IsProxyActive = true;
+        }
+
+        /// <summary>
+        /// Cancels sending subsequent requests through the BugSense proxy
+        /// </summary>
+        /// <returns></returns>
+        public static void DeactivateProxy()
+        {
+            G.IsProxyActive = false;
+        }
+
+#if (WINDOWS_PHONE || NETFX_CORE)
+        /// <summary>
+        /// Enables localized fix notifications that override the dashboard counterparts
+        /// </summary>
+        /// <param name="title">Fix notification title.</param>
+        /// <param name="content">Fix notification content.</param>
+        /// <returns></returns>
+        public static void SetLocalizedFixNotifications(string title, string content)
+        {
+            G.LocalizedFixTitle = title;
+            G.LocalizedFixText = content;
+            G.HasLocalizedFixes = true;
+        }
+
+        /// <summary>
+        /// Disables localized fix notifications
+        /// </summary>
+        /// <returns></returns>
+        public static void ResetLocalizedFixNotifications()
+        {
+            G.HasLocalizedFixes = false;
+        }
+#endif
+
         ///////////////////////////////////////////////////////////////////////////////////////////
 
 #if FREE_BIRD
         public static string GetUrl()
         {
-            return G.URL;
+            return G.IsProxyActive ? G.PROXY_URL : G.URL;
         }
 
         public static void SetUrl(string url)
         {
             G.URL = url;
+            G.PROXY_URL = url;
         }
 
         public static string GetEvtUrl()
         {
-            return G.EVT_URL_PRE;
+            return G.IsProxyActive ? G.EVT_PROXY_URL_PRE : G.EVT_URL_PRE;
         }
 
         public static void SetEvtUrl(string url)
         {
             G.EVT_URL_PRE = url;
+            G.EVT_PROXY_URL_PRE = url;
             G.IsEvtUrlPre = false;
         }
 
         public static void ResetUrls()
         {
             G.URL = G.DEFAULT_URL;
+            G.PROXY_URL = G.DEFAULT_PROXY_URL;
             G.EVT_URL_PRE = G.DEFAULT_EVT_URL_PRE;
+            G.EVT_PROXY_URL_PRE = G.DEFAULT_EVT_PROXY_URL_PRE;
             G.IsEvtUrlPre = G.DEFAULT_IS_EVT_URL_PRE;
         }
 
         public void SendPingEvent()
         {
-            SendEvent(G.PingEvent);
+            HandleEvent(G.PingEvent, false, true);
         }
 #endif //FREE_BIRD
 
@@ -404,7 +490,7 @@ namespace BugSense
 
 #if WINDOWS_PHONE
         private void OnUnhandledException(object sender, ApplicationUnhandledExceptionEventArgs args)
-#elif NETFX_CORE
+#else
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs args)
 #endif
         {
@@ -414,6 +500,9 @@ namespace BugSense
 #elif NETFX_CORE
             var except = args.Exception;
             string excMsg = args.Message;
+#else
+			var except = args.ExceptionObject;
+			string excMsg = "";
 #endif
             if (except is BugSenseUnhandledException)
                 return;
@@ -421,7 +510,7 @@ namespace BugSense
 #if NETFX_CORE
             TryToSetDispatcher();
 #endif
-
+#if (WINDOWS_PHONE || NETFX_CORE)
             bool handled = args.Handled;
             args.Handled = true;
             var e = new BugSenseUnhandledExceptionEventArgs(except, args.Handled);
@@ -429,16 +518,28 @@ namespace BugSense
             if (e.Cancel)
                 return;
             //NOTE: debugger section
-            if (Debugger.IsAttached && !_options.HandleWhileDebugging)
-                return;
+            if (Debugger.IsAttached)
+                if(_options == null || !_options.HandleWhileDebugging)
+                    return;
             Handle(except, excMsg, false, e.Comment, _options, !handled);
             args.Handled = true;
+#else
+			var e = new BugSenseUnhandledExceptionEventArgs((Exception)except, false);
+			OnBugSenseUnhandledException(e);
+			if (e.Cancel)
+				return;
+			//NOTE: debugger section
+            if (Debugger.IsAttached)
+                if(_options == null || !_options.HandleWhileDebugging)
+                    return;
+			Handle((Exception)except, excMsg, false, e.Comment, _options, true);
+#endif
         }
 
         private DateTime _lastMethodHandledCalledAt;
         private DateTime _lastFlatCalledAt;
 
-        private void SendEvent(string tag)
+        private void HandleEvent(string tag, bool cacheonly, bool reserved)
         {
             if (DateTime.Now.AddSeconds(-1) < _lastFlatCalledAt)
             {
@@ -446,7 +547,10 @@ namespace BugSense
             }
             _lastFlatCalledAt = DateTime.Now;
 
-            _worker.SendEventNow(GetEnvironment(true), tag);
+            if (!cacheonly)
+                _worker.SendEventNow(GetEnvironment(true), tag, reserved);
+            else
+                _worker.CacheEvent(GetEnvironment(true), tag, reserved);
         }
 
         private void Handle(Exception e, string excMsg, bool fromTask, string tag,
@@ -459,25 +563,26 @@ namespace BugSense
             _lastMethodHandledCalledAt = DateTime.Now;
 
             //NOTE: debugger section
-            if (Debugger.IsAttached && !options.HandleWhileDebugging)
-            {
-                // Don't send the error
-                return;
-            }
+            if (Debugger.IsAttached)
+                if (_options == null || !_options.HandleWhileDebugging)
+                {
+                    // Don't send the error
+                    return;
+                }
             bool handled = !isFatal;
 #if WINDOWS_PHONE
             bool basicEnv = false;
-#elif NETFX_CORE
+#else
             bool basicEnv = fromTask;
 #endif
-            var request = new BugSenseRequest(e.ToBugSenseEx(excMsg, handled, tag, GetBreadcrumbs()),
+            var request = new BugSenseExceptionRequest(e.ToBugSenseEx(excMsg, handled, tag, GetBreadcrumbs()),
                 GetEnvironment(basicEnv), GetAllExtraData(logExtra));
 
             if (handled)
             {
 #if WINDOWS_PHONE
                 LogAndSend(request, true, false);
-#elif NETFX_CORE
+#else
                 LogAndSend(request, false, false);
 #endif
                 return;
@@ -485,7 +590,8 @@ namespace BugSense
 
             try
             {
-                switch (options.Type)
+#if (WINDOWS_PHONE || NETFX_CORE)
+				switch (options.Type)
                 {
                     case enNotificationType.MessageBoxConfirm:
                         if (!NotificationBox.IsOpen())
@@ -517,6 +623,9 @@ namespace BugSense
                         LogAndSend(request, false, isFatal);
                         break;
                 }
+#else
+				LogAndSend(request, false, isFatal);
+#endif
             }
             catch (BugSenseUnhandledException ex)
             {
@@ -524,17 +633,31 @@ namespace BugSense
             }
             catch (Exception)
             {
-                if (options.Type != enNotificationType.MessageBoxConfirm)
+#if (WINDOWS_PHONE || NETFX_CORE)
+				if (options.Type != enNotificationType.MessageBoxConfirm)
                     LogAndSend(request, false, isFatal);
+#else
+				LogAndSend(request, false, isFatal);
+#endif
             }
         }
 
-        private void LogAndSend(BugSenseRequest request, bool cacheOnly, bool isFatal)
-        {
-            if (cacheOnly)
-                _worker.CacheError(request, isFatal);
-            else
-                _worker.SendErrorNow(request, isFatal);
+        private void LogAndSend (BugSenseExceptionRequest request, bool cacheOnly, bool isFatal)
+		{
+			if (cacheOnly)
+				_worker.CacheError (request, isFatal);
+			else {
+#if DEBUG
+				_worker.SendErrorNow (request, isFatal, DebugFixResponse);
+#else
+				_worker.SendErrorNow (request, isFatal);
+#endif
+
+#if (!WINDOWS_PHONE && !NETFX_CORE)
+				if(isFatal)
+					Helpers.SleepFor(4000);
+#endif
+			}
         }
 
         private void FixNotifier(object sender, FixNotificationEventArgs e)
@@ -556,6 +679,8 @@ namespace BugSense
                                     _worker.NotificationHelper(e.FixResponse, e.IsFatal, _actOnExit);
                                 });
                         });
+#else
+				_worker.NotificationHelper(e.FixResponse, e.IsFatal, _actOnExit);
 #endif
             }
         }
@@ -590,31 +715,28 @@ namespace BugSense
 
         private Dictionary<string, string> GetAllExtraData(Dictionary<string, string> loggedExcExtra = null)
         {
-            Dictionary<string, string> res = new Dictionary<string, string>();
-            string r1 = "";
-
-            lock (G.LockThis)
-            {
-                res = new Dictionary<string, string>(G.ExcExtraData.Get());
-                r1 = G.Timer.ElapsedMilliseconds.ToString();
-            }
-            if (loggedExcExtra != null)
-            {
-                ExtraData le = new ExtraData();
-                le.Set(loggedExcExtra);
-                var pairs = le.Get();
-                if (pairs != null)
-                    foreach (var pair in pairs)
-                        res[pair.Key] = pair.Value;
-            }
-            res["ms_from_start"] = r1;
-
-            return res;
-        }
+			Dictionary<string, string> res = new Dictionary<string, string> ();
+			string r1 = "";
+			
+			lock (G.LockThis) {
+				res = new Dictionary<string, string> (G.ExcExtraData.Dict);
+				r1 = G.Timer.ElapsedMilliseconds.ToString ();
+			}
+			if (loggedExcExtra != null) {
+				ExtraData le = new ExtraData (loggedExcExtra);
+				var pairs = le.Dict;
+				if (pairs != null)
+					foreach (var pair in pairs)
+						res [pair.Key] = pair.Value;
+			}
+			res ["ms_from_start"] = r1;
+			
+			return res;
+		}
 
         private AppEnvironment GetEnvironment(bool basic = false)
         {
-            return BugSenseExEnv.GetEnvironment(_appName, _appVersion, _worker.ManageUUID(), basic);
+            return BugSenseEnvironment.GetEnvironment(_appName, _appVersion, _worker.ManageUUID(), basic);
         }
 
         #endregion

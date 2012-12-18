@@ -5,24 +5,27 @@ using System.Windows;
 
 namespace BugSense
 {
-#if NETFX_CORE
+	#region [ Helper class ]
+#if !WINDOWS_PHONE
     public class BugSenseUnhandledDummyObj
     {
         public Exception Ex;
         public bool Handled { get; set; }
 
-        public BugSenseUnhandledDummyObj(Exception ex, bool Handled)
+        public BugSenseUnhandledDummyObj(Exception ex, bool handled)
         {
-            this.Ex = ex;
-            this.Handled = Handled;
+            Ex = ex;
+            Handled = handled;
         }
     }
 #endif
+	#endregion
 
+	#region [ Derived class ]
 #if WINDOWS_PHONE
     public class BugSenseUnhandledExceptionEventArgs : ApplicationUnhandledExceptionEventArgs
     {
-#elif NETFX_CORE
+#else
     public class BugSenseUnhandledExceptionEventArgs : BugSenseUnhandledDummyObj
     {
 #endif
@@ -42,4 +45,5 @@ namespace BugSense
         {
         }
     }
+	#endregion
 }

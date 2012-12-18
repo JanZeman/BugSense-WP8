@@ -5,7 +5,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace BugSense.InternalW8
 {
-    internal class BugSenseExEnv
+    internal class BugSenseEnvironment
     {
         public static AppEnvironment GetEnvironment(string appName, string appVersion, string uuid,
             bool basic = false)
@@ -15,12 +15,12 @@ namespace BugSense.InternalW8
             environment.AppName = appName;
             environment.AppVersion = appVersion;
 
-            environment.OsVersion = " Windows NT 6.2";
+            environment.OsVersion = "Windows NT 6.2";
             environment.PhoneModel = "unknown";
             environment.PhoneManufacturer = "unknown";
 
             Task.Run(async () => environment.CpuModel = await GetCpu()).Wait();
-            environment.CpuBitness = sizeof(int) * 8;
+            environment.CpuBitness = sizeof(long) * 8;
 
             environment.IsTrial = Windows.ApplicationModel.Store.CurrentApp.LicenseInformation.IsTrial;
 

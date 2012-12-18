@@ -108,6 +108,9 @@
     <Compile Include="..\Shared\BugSenseUnhandledExceptionEventArgs.cs">
       <Link>BugSenseUnhandledExceptionEventArgs.cs</Link>
     </Compile>
+    <Compile Include="..\Shared\enNotificationType.cs">
+      <Link>enNotificationType.cs</Link>
+    </Compile>
     <Compile Include="..\Shared\Internal\Breadcrumbs.cs">
       <Link>Internal\Breadcrumbs.cs</Link>
     </Compile>
@@ -117,11 +120,8 @@
     <Compile Include="..\Shared\Internal\BugSenseEvent.cs">
       <Link>Internal\BugSenseEvent.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\Internal\BugSenseEx.cs">
-      <Link>Internal\BugSenseEx.cs</Link>
-    </Compile>
-    <Compile Include="..\Shared\Internal\enNotificationType.cs">
-      <Link>Internal\enNotificationType.cs</Link>
+    <Compile Include="..\Shared\Internal\BugSenseException.cs">
+      <Link>Internal\BugSenseException.cs</Link>
     </Compile>
     <Compile Include="..\Shared\Internal\EntropyUUID.cs">
       <Link>Internal\EntropyUUID.cs</Link>
@@ -141,9 +141,6 @@
     <Compile Include="..\Shared\Internal\Helpers.cs">
       <Link>Internal\Helpers.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\Internal\NotificationOptions.cs">
-      <Link>Internal\NotificationOptions.cs</Link>
-    </Compile>
     <Compile Include="..\Shared\Internal\WebRequests.cs">
       <Link>Internal\WebRequests.cs</Link>
     </Compile>
@@ -152,6 +149,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Labels.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\Shared\NotificationOptions.cs">
+      <Link>NotificationOptions.cs</Link>
     </Compile>
     <Compile Include="..\Shared\Tasks\FixNotificationEventArgs.cs">
       <Link>Tasks\FixNotificationEventArgs.cs</Link>
@@ -162,11 +162,11 @@
     <Compile Include="..\Shared\Tasks\LogEvent.cs">
       <Link>Tasks\LogEvent.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\Tasks\ProcessMsgs.cs">
-      <Link>Tasks\ProcessMsgs.cs</Link>
+    <Compile Include="..\Shared\Tasks\ProcessRequests.cs">
+      <Link>Tasks\ProcessRequests.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\Tasks\SendMsg.cs">
-      <Link>Tasks\SendMsg.cs</Link>
+    <Compile Include="..\Shared\Tasks\SendRequest.cs">
+      <Link>Tasks\SendRequest.cs</Link>
     </Compile>
     <Compile Include="..\Shared\Tasks\UUIDFactory.cs">
       <Link>Tasks\UUIDFactory.cs</Link>
@@ -174,7 +174,7 @@
     <Compile Include="..\Shared\Tasks\Worker.cs">
       <Link>Tasks\Worker.cs</Link>
     </Compile>
-    <Compile Include="InternalW8\BugSenseExEnv.cs" />
+    <Compile Include="InternalW8\BugSenseEnvironment.cs" />
     <Compile Include="InternalW8\NotificationBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

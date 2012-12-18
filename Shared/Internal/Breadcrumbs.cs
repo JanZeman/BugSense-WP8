@@ -3,73 +3,89 @@ using System;
 
 namespace BugSense.Internal
 {
-    internal class Breadcrumbs
-    {
-        private string[] sarray = new string[MAXCOUNT];
-        private const int MAXLEN = 64;
-        private int count = 0;
-        private const int MAXCOUNT = 16;
+	internal class Breadcrumbs
+	{
+		#region [ Attributes ]
+		public string[] Arr { get; private set; }
 
-        public Breadcrumbs()
-        {
-        }
+		private const int MAXLEN = 64;
 
-        public void Reset()
-        {
-            this.count = 0;
-        }
+		public int Count { get; private set; }
 
-        public bool AppendTo(string val)
-        {
-            string value;
+		private const int MAXCOUNT = 16;
+		#endregion
 
-            if (val == null)
-                return false;
+		#region [ Ctor ]
+		public Breadcrumbs ()
+		{
+			Reset ();
+		}
+		#endregion
 
-            value = val.Trim();
-            value = value.Substring(0, value.Length <= MAXLEN ? value.Length : MAXLEN);
-            if (value[0] == '_')
-            {
-                char[] tmp = value.ToCharArray();
-                tmp[0] = '-';
-                value = new string(tmp);
-            }
-            value.Replace("|", "_");
+		#region [ Public Methods ]
+		public void Reset ()
+		{
+			Count = 0;
+			Arr = new string[MAXCOUNT];
+		}
 
-            if (this.count >= MAXCOUNT)
-            {
-                for (int i = 1; i < MAXCOUNT; i++)
-                    this.sarray[i - 1] = this.sarray[i];
-                this.sarray[MAXCOUNT - 1] = value;
-            }
-            else
-            {
-                this.sarray[this.count] = value;
-                this.count++;
-            }
+		public bool AppendTo (string val)
+		{
+			string value;
 
-            return true;
-        }
+			if (String.IsNullOrEmpty (val))
+				return false;
 
-        public string Reduce()
-        {
-            string res = new string("".ToCharArray());
+			value = NormalizeElement (val);
+			if (value [0] == '_') {
+				char[] tmp = value.ToCharArray ();
+				tmp [0] = '-';
+				value = new string (tmp);
+			}
+			value = value.Replace ("|", "-");
 
-            if (this.count <= 0)
-                return res;
+			if (Count >= MAXCOUNT) {
+				for (int i = 1; i < MAXCOUNT; i++)
+					Arr [i - 1] = Arr [i];
+				Arr [MAXCOUNT - 1] = value;
+			} else {
+				Arr [Count] = value;
+				Count++;
+			}
 
-            res += this.sarray[0];
-            for (int i = 1; i < this.count; i++)
-                res += "|" + this.sarray[i];
+			return true;
+		}
 
-            return res;
-        }
+		override public string ToString ()
+		{
+			string res = new string ("".ToCharArray ());
 
-        public void Print()
-        {
-            for (int i = 0; i < this.count; i++)
-                Helpers.Log("this.sarray[i]");
-            Helpers.Log("count = " + this.count);
-        }
-    }
+			if (Count <= 0)
+				return res;
+
+			res += Arr [0];
+			for (int i = 1; i < Count; i++)
+				res += "|" + Arr [i];
+
+			return res;
+		}
+
+		public void Print ()
+		{
+			Helpers.Log (ToString () + " [count = " + Count + "]");
+		}
+		#endregion
+
+		#region [ Private Methods ]
+		private string NormalizeElement (string elm)
+		{
+			string tmp;
+			
+			tmp = elm.Trim ();
+			tmp = tmp.Substring (0, tmp.Length <= MAXLEN ? tmp.Length : MAXLEN);
+			
+			return tmp;
+		}
+		#endregion
+	}
 }

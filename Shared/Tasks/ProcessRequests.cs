@@ -6,39 +6,47 @@ using System.Threading.Tasks;
 
 namespace BugSense.Tasks
 {
-    internal class ProcessMsgs
+    internal class ProcessRequests
     {
+		#region [ Attributes ]
         private string _uuid = "";
+		#endregion
 
-        public ProcessMsgs(string uuid)
+		#region [ Ctor ]
+        public ProcessRequests(string uuid)
         {
             _uuid = uuid;
         }
+		#endregion
 
+		#region [ Public methods ]
         public async Task<int> Execute()
         {
             int r = 0;
 
             try
             {
-                var taskList = new List<SendMsg>();
+                var taskList = new List<SendRequest>();
                 int counter = 0;
 
                 List<string> list = await Files.GetDirFilenames(G.FolderName, G.CrashFileNamePrefix);
                 List<string> list2 = await Files.GetDirFilenames(G.FolderName, G.LoggedExceptionFileNamePrefix);
                 List<string> list3 = await Files.GetDirFilenames(G.FolderName, G.PingFileNamePrefix);
+                List<string> list4 = await Files.GetDirFilenames(G.FolderName, G.EventFileNamePrefix);
 
                 counter = await ProcessList(taskList, list, G.MaxCrashes, true, _uuid);
-                Helpers.Log("ProcessMsg 1/4 :: gotExceptions: " + counter);
+				Helpers.Log("ProcessRequests 1/5 :: gotExceptions: " + counter);
                 counter = await ProcessList(taskList, list2, G.MaxLoggedExceptions, true, _uuid);
-                Helpers.Log("ProcessMsg 2/4 :: gotEvts: " + counter);
+				Helpers.Log("ProcessRequests 2/5 :: gotLoggedExceptions: " + counter);
                 counter = await ProcessList(taskList, list3, G.MaxPings, false, _uuid);
-                Helpers.Log("ProcessMsg 2/4 :: gotEvts: " + counter);
+				Helpers.Log("ProcessRequests 3/5 :: gotPings: " + counter);
+                counter = await ProcessList(taskList, list4, G.MaxEvents, false, _uuid);
+                Helpers.Log("ProcessRequests 4/5 :: gotEvents: " + counter);
 
-                Helpers.Log("ProcessMsg 4/4 :: sending: " + taskList.Count);
+				Helpers.Log("ProcessRequests 5/5 :: sending: " + taskList.Count);
                 if (taskList != null)
                 {
-                    foreach (SendMsg err in taskList)
+                    foreach (SendRequest err in taskList)
                     {
                         //NOTE: r is equal to the _attempted_ executions
                         //  (we don't know if each web request was successful)
@@ -54,8 +62,10 @@ namespace BugSense.Tasks
 
             return r;
         }
+		#endregion
 
-        private async static Task<int> ProcessList(List<SendMsg> taskList, List<string> list, int max,
+		#region [ Private methods ]
+        private async static Task<int> ProcessList(List<SendRequest> taskList, List<string> list, int max,
             bool isException, string uuid)
         {
             int counter = 0;
@@ -70,14 +80,9 @@ namespace BugSense.Tasks
                     if (counter < max)
                     {
                         if (isException)
-                            taskList.Add(new SendMsg(fileName));
+                            taskList.Add(new SendRequest(fileName));
                         else
-                        {
-                            string url = G.IsEvtUrlPre ?
-                                G.EVT_URL_PRE + G.API_KEY + "/" + uuid :
-                                G.EVT_URL_PRE;
-                            taskList.Add(new SendMsg(url, fileName, false));
-                        }
+                            taskList.Add(new SendRequest(WebRequests.GetEventURL(uuid), fileName, false));
                     }
                     else
                         await Files.Delete(G.FolderName, fileName);
@@ -88,5 +93,6 @@ namespace BugSense.Tasks
 
             return counter;
         }
+		#endregion
     }
 }

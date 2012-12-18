@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace BugSense.InternalWP8
 {
-    internal class BugSenseExEnv
+    internal class BugSenseEnvironment
     {
         public static AppEnvironment GetEnvironment(string appName, string appVersion, string uuid,
             bool basic = false)
@@ -22,7 +22,7 @@ namespace BugSense.InternalWP8
             environment.OsVersion = Environment.OSVersion.Version.ToString();
 
             environment.CpuModel = "unknown";
-            environment.CpuBitness = sizeof(int) * 8;
+            environment.CpuBitness = sizeof(long) * 8;
 
             environment.IsTrial = Windows.ApplicationModel.Store.CurrentApp.LicenseInformation.IsTrial;
 

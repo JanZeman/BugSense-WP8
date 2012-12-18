@@ -1,4 +1,4 @@
-﻿using BugSense.Extensions;
+using BugSense.Extensions;
 using BugSense.Internal;
 using System;
 using System.IO;
@@ -10,17 +10,22 @@ namespace BugSense.Tasks
 {
     internal class LogError
     {
-        private readonly BugSenseRequest _request;
+		#region [ Attributes ]
+        private readonly BugSenseExceptionRequest _request;
         private readonly bool _isFatal;
         private static readonly DataContractJsonSerializer _jsonSerializer =
-            new DataContractJsonSerializer(typeof(BugSenseRequest));
+            new DataContractJsonSerializer(typeof(BugSenseExceptionRequest));
+		#endregion
 
-        public LogError(BugSenseRequest request, bool isFatal)
+		#region [ Ctor ]
+        public LogError(BugSenseExceptionRequest request, bool isFatal)
         {
             _request = request;
             _isFatal = isFatal;
         }
+		#endregion
 
+		#region [ Public methods ]
         public async Task<string> Execute()
         {
             if (_request == null)
@@ -34,8 +39,10 @@ namespace BugSense.Tasks
             }
             return string.Empty;
         }
+		#endregion
 
-        private string GetJson(BugSenseRequest request)
+		#region [ Private methods ]
+        private string GetJson(BugSenseExceptionRequest request)
         {
             try
             {
@@ -61,7 +68,7 @@ namespace BugSense.Tasks
             Helpers.Log("LogError 2/2 :: Saving to file");
             string fname = _isFatal ? G.CrashFileName : G.LoggedExceptionFileName;
             string fileName = string.Format(fname, DateTime.UtcNow.ToString("yyyyMMddHHmmss"), Guid.NewGuid());
-            bool result = await Files.WriteTo(G.FolderName, fileName, postData);
+            bool result = await Files.CreatWriteTo(G.FolderName, fileName, postData);
             Helpers.Log("LogError 2/2 :: Done saving to file: " + result);
             if (result)
                 return fileName;
@@ -69,5 +76,6 @@ namespace BugSense.Tasks
             // Getting in here means the device is about to explode!
             return string.Empty;
         }
+		#endregion
     }
 }
