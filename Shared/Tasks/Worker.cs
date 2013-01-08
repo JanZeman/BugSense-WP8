@@ -42,17 +42,18 @@ namespace BugSense.Tasks
 
 		public Worker(bool with)
         {
+            string uuid = ManageUUID();
+
             if (with)
-                ProcessAll();
+                ProcessAll(uuid);
         }
 		#endregion
 
 		#region [ Public methods ]
-        public void ProcessAll()
+        public void ProcessAll(string uuid)
         {
             Task t = new Task(async () =>
                 {
-                    string uuid = await UUIDFactory.Get();
                     ProcessRequests msgs = new ProcessRequests(uuid);
 
                     try
@@ -204,7 +205,9 @@ namespace BugSense.Tasks
 
         public string ManageUUID ()
 		{
-			string uuid = G.UUID;
+            UUIDFactory._lock2.WaitOne();
+            string uuid = G.UUID;
+            UUIDFactory._lock2.Release();
 
 			if (string.IsNullOrEmpty (uuid))
 				Task.Run(async () => {

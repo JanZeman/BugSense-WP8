@@ -12,11 +12,11 @@ namespace BugSense.Internal
 		internal const string BUGSENSE_NAME = "bugsense-dotnet";
 #endif
         internal const string BUGSENSE_FLAVOR = "csharp";
-        internal const string BUGSENSE_API_VER = "3.3";
+        internal const string BUGSENSE_API_VER = "3.4";
 
         //NOTE: for testing purposes
 #if DEBUG
-        internal const string DEFAULT_URL = "http://requestb.in/r6rcq3r6";
+        internal const string DEFAULT_URL = "http://requestb.in/1fvngws1";
         internal const string DEFAULT_PROXY_URL = DEFAULT_URL;
         internal const string DEFAULT_EVT_URL_PRE = DEFAULT_URL;
         internal const string DEFAULT_EVT_PROXY_URL_PRE = DEFAULT_URL;

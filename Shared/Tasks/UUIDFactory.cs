@@ -10,6 +10,7 @@ namespace BugSense.Tasks
     internal class UUIDFactory
     {
         private static readonly Semaphore _lock = new Semaphore(1, 1);
+        public static readonly Semaphore _lock2 = new Semaphore(1, 1);
 
         public async static Task<string> Get()
         {
@@ -30,8 +31,11 @@ namespace BugSense.Tasks
 				uuid = EntropyUUID.UUID.GetNew();
 				bool wrote = await Files.CreatWriteTo(G.FolderName, G.UUIDFileName, uuid);
 				Helpers.Log("UUIDFactory :: trying to write UUID to file: " + wrote);
-			}
-			Helpers.Log("UUIDFactory :: UUID is " + uuid);
+            }
+            _lock2.WaitOne();
+            G.UUID = uuid;
+            _lock2.Release();
+            Helpers.Log("UUIDFactory :: UUID is " + uuid);
 
             return uuid;
         }
