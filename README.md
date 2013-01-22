@@ -38,15 +38,7 @@ public App()
      BugSenseHandler.Instance.Init(this, "YOUR_API_KEY");
 }
 ```
-![App.xaml.cs](http://www.bugsense.com/static/images/landing/screens/linecode.jpg)
 
-You can also remove any Unhandled Exception handlers like this one:
-	
-	UnhandledException += Application_UnhandledException;
-
-or you can replace with the following
-
-	BugSenseHandler.Instance.UnhandledException += OnUnhandledException;
 
 Now you can ship your application and stay cool. We will make sure 
 you won't miss a bug.
