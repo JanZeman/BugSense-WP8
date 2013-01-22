@@ -155,6 +155,12 @@ private void MyMethod()
 }
 ```
 
+Track an event
+```c#
+/* Send event */
+BugSenseHandler.Instance.SendEvent("anEvent");
+```
+
 Use BugSense along with the VisualStudio debugger
 ```c#
 public App()
