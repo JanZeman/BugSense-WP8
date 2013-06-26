@@ -39,8 +39,13 @@ namespace BugSense.InternalW8
 
             environment.ScreenOrientation = Windows.Graphics.Display.DisplayProperties.CurrentOrientation.ToString();
             environment.ScreenDpi = Windows.Graphics.Display.DisplayProperties.LogicalDpi.ToString();
-            environment.ScreenWidth = Windows.UI.Xaml.Window.Current.Bounds.Width;
-            environment.ScreenHeight = Windows.UI.Xaml.Window.Current.Bounds.Height;
+            
+            var currentWindow = Windows.UI.Xaml.Window.Current;
+            if (currentWindow != null)
+            {
+                environment.ScreenWidth = currentWindow.Bounds.Width;
+                environment.ScreenHeight = currentWindow.Bounds.Height;
+            }
 
             environment.Rooted = false;
 
